@@ -14,8 +14,9 @@ var util = require('util');
 module.exports = function (grunt) {
 
     var buildCommand = function (options) {
-        var dll = this.data.dll;
-        var xUnit = options.xUnit;
+        var dll = this.data.dll,
+            xUnit = options.xUnit;
+
         var cmd = util.format("%s %s", xUnit, dll);
         return cmd;
     };
@@ -29,8 +30,8 @@ module.exports = function (grunt) {
         var cb = this.async();
         var cmd = buildCommand.bind(this)(options);
         var cp = exec(cmd, {}, function (err, stdout, stderr) {
-            if (err) {
-                grunt.fatal(err);
+            if (err || stderr) {
+                grunt.fatal(err || stderr);
             }
             cb();
         }.bind(this));
